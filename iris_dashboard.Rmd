@@ -1,0 +1,120 @@
+---
+title: "Dashboard of Iris Dataset"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source_code: embed
+    runtime: shiny
+---   
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(ggplot2)
+library(plotly)
+library(shiny)
+```
+
+```{r}
+library(datasets)
+data(iris)
+```
+
+
+Histogram
+====================
+
+## Column {.sidebar}
+```{r}
+selectInput(
+  "histInput",
+  label = "Select Variable for Histogram",
+  choices = colnames(iris)[1:4],
+  selected = colnames(iris)[1]
+)
+```
+## Column
+### Histogram
+
+```{r}
+renderPlotly({
+  hist <- ggplot(iris, aes(x = .data[[input$histInput]], fill = Species)) +
+    geom_histogram(bins = 20, alpha = 0.6, position = "identity") +
+    labs(title = "Histogram", x = input$histInput, y = "Count") +
+    theme_minimal()
+  
+  ggplotly(hist)
+})
+
+plotlyOutput("histPlot")
+
+```
+
+Box plot
+=======================
+## Column {.sidebar}
+```{r}
+selectInput(
+  "boxInput",
+  label = "Select Variable for Boxplot",
+  choices = colnames(iris)[1:4],
+  selected = colnames(iris)[1]
+)
+```
+## Column
+### Boxplot
+
+```{r}
+renderPlotly({
+  boxplot <- ggplot(iris, aes(x = Species, y = .data[[input$boxInput]], fill = Species)) +
+    geom_boxplot(alpha = 0.7) +
+    labs(title = "Boxplot", x = "Species", y = input$boxInput) +
+    theme_minimal()
+  
+  ggplotly(boxplot)
+})
+
+plotlyOutput("boxPlot")
+```
+
+
+Scatter plot
+=======================
+## Column {.sidebar}
+
+Select axes
+
+```{r}
+selectInput(
+  "xinput",
+  label="X-axis",
+  choices = colnames(iris)[1:4],
+  selected = colnames(iris)[1]
+)
+
+selectInput(
+  "yinput",
+  label="Y-axis",
+  choices = colnames(iris)[1:4],
+  selected = colnames(iris)[2]
+)
+```
+
+## Column
+
+### Scatter Plot
+
+```{r}
+renderPlotly({
+  plot <- ggplot(iris, aes(x = .data[[input$xinput]], y = .data[[input$yinput]], color = Species)) +
+    geom_point(size = 3, alpha = 0.8) +
+    labs(title = "Scatter Plot", x = input$xinput, y = input$yinput) +
+    theme_minimal()
+  
+  ggplotly(plot)
+})
+
+plotlyOutput("scatterPlot")
+
+
+```
