@@ -1,4 +1,4 @@
-#Dashboard of Iris Dataset
+##Dashboard of Iris Dataset
 
 This project is a Flexdashboard with interactive visualizations of the Iris dataset using R, flexdashboard, plotly, and shiny. The dashboard includes three main sections: Histogram, Boxplot, and Scatter Plot. Users can interactively select variables to explore the dataset's features and relationships.
 
